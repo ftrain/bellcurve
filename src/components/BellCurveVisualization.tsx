@@ -108,10 +108,9 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
 
     // Add data points if available
     if (data && data.length > 0) {
-      const histogram = d3.histogram()
+      const histogram = d3.bin()
         .domain(xScale.domain())
-        .thresholds(xScale.ticks(30))
-        .value(d => d);
+        .thresholds(30);
 
       const bins = histogram(data);
       const maxBinLength = d3.max(bins, d => d.length) || 0;
