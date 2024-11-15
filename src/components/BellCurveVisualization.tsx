@@ -141,7 +141,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
       
       tooltip.select('text')
         .text(`Value: ${x.toFixed(2)}, Percentile: ${percentile.toFixed(1)}%`);
-    });
+    };
 
     // Handle mouse events
     overlay
