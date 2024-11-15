@@ -132,15 +132,41 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
       const y = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * 
                 Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2)));
       
-      // Calculate percentile
+      // Calculate statistics
       const zscore = (x - mean) / stdDev;
       const percentile = (1 + erf(zscore / Math.sqrt(2))) / 2 * 100;
+      const density = y * 100;
 
-      tooltip.style('display', null)
-        .attr('transform', `translate(${xScale(x)},${yScale(y)})`);
-      
-      tooltip.select('text')
-        .text(`Value: ${x.toFixed(2)}, Percentile: ${percentile.toFixed(1)}%`);
+      // Update vertical line position
+      verticalLine
+        .style('display', null)
+        .attr('x1', xScale(x))
+        .attr('x2', xScale(x));
+
+      // Update tooltip position and content
+      const tooltipX = xScale(x);
+      const tooltipY = yScale(y) - 80; // Position above the curve
+
+      tooltipContainer
+        .style('display', null)
+        .attr('transform', `translate(${tooltipX},${tooltipY})`);
+
+      tooltipText.selectAll('tspan')
+        .data([
+          `Value: ${x.toFixed(2)}`,
+          `Percentile: ${percentile.toFixed(1)}%`,
+          `Density: ${density.toFixed(1)}%`
+        ])
+        .text(d => d);
+
+      // Update tooltip background size
+      const bbox = tooltipText.node()?.getBBox();
+      if (bbox) {
+        tooltipContainer.select('rect')
+          .attr('width', bbox.width + 16)
+          .attr('height', bbox.height + 8)
+          .attr('y', -4);
+      }
     };
 
     // Handle mouse events
@@ -157,7 +183,8 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         }
       })
       .on('mouseout touchend', () => {
-        tooltip.style('display', 'none');
+        verticalLine.style('display', 'none');
+        tooltipContainer.style('display', 'none');
       })
       .on('keydown', (event) => {
         const step = width / 50;
@@ -241,35 +268,44 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         .text(`${n}σ`);
     });
 
-    // Add zoom behavior
-    const zoom = d3.zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.5, 5])
-      .on('zoom', (event) => {
-        // Only update x-scale, keeping y-scale fixed
-        const newXScale = event.transform.rescaleX(xScale);
-        
-        // Update visualization using the new x-scale but keeping original y-scale
-        const updatedLine = d3.line<{ x: number; y: number }>()
-          .x(d => newXScale(d.x))
-          .y(d => yScale(d.y))
-          .curve(d3.curveBasis);
+    // Add vertical line that follows mouse position
+    const verticalLine = vizGroup.append('line')
+      .attr('class', 'vertical-line')
+      .attr('y1', 0)
+      .attr('y2', height)
+      .attr('stroke', '#666')
+      .attr('stroke-width', 1)
+      .attr('stroke-dasharray', '4,4')
+      .style('display', 'none');
 
-        vizGroup.selectAll('path.curve')
-          .attr('d', (d: any) => updatedLine(d));
+    // Add tooltip container with more detailed information
+    const tooltipContainer = vizGroup.append('g')
+      .attr('class', 'tooltip-container')
+      .style('display', 'none');
 
-        // Update x-axis only
-        svg.select('.x-axis').call(d3.axisBottom(newXScale) as any);
-        
-        // Update grid lines
-        svg.select('.grid')
-          .call(d3.axisBottom(newXScale)
-            .tickSize(height)
-            .tickFormat(() => '') as any
-          );
-      });
+    tooltipContainer.append('rect')
+      .attr('rx', 4)
+      .attr('ry', 4)
+      .attr('fill', 'white')
+      .attr('stroke', '#666')
+      .attr('stroke-width', 1)
+      .attr('padding', 8);
 
-    d3.select(svgRef.current)
-      .call(zoom);
+    const tooltipText = tooltipContainer.append('text')
+      .attr('font-size', '12px')
+      .attr('fill', '#333');
+
+    tooltipText.append('tspan')
+      .attr('x', 8)
+      .attr('dy', '1.2em');
+
+    tooltipText.append('tspan')
+      .attr('x', 8)
+      .attr('dy', '1.2em');
+
+    tooltipText.append('tspan')
+      .attr('x', 8)
+      .attr('dy', '1.2em');
 
     // Add data points if available
     if (data && data.length > 0) {
