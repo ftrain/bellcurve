@@ -221,7 +221,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
           .curve(d3.curveBasis);
 
         vizGroup.selectAll('path.curve')
-          .attr('d', updatedLine);
+          .attr('d', (d: any) => updatedLine(d));
 
         // Update x-axis only
         svg.select('.x-axis').call(d3.axisBottom(newXScale) as any);
