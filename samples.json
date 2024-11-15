@@ -1,0 +1,119 @@
+[
+  {
+    "id": "climate_change_temps",
+    "name": "Global Temperature Anomalies",
+    "category": "environment",
+    "description": "Temperature deviations from the 20th-century average across different regions.",
+    "dataPoints": [0.2, 0.3, -0.1, 0.5, 0.7, -0.2, 0.1, 0.4, 0.3, 0.2],
+    "explanation": "This dataset helps visualize the change in global temperatures over time. Using the bell curve to understand temperature anomalies assumes that fluctuations are distributed normally, but there are risks since climate changes can introduce skewed or non-normal patterns due to extreme weather events.",
+    "source": "World Climate Research Program"
+  },
+  {
+    "id": "real_estate_prices",
+    "name": "Real Estate Prices",
+    "category": "finance",
+    "description": "Prices of residential properties in a major metropolitan area.",
+    "dataPoints": [300000, 450000, 500000, 350000, 420000, 310000, 490000, 470000, 430000, 340000],
+    "explanation": "This dataset helps evaluate the distribution of property prices in an urban area. Care must be taken with outliers, as the presence of luxury homes can skew the distribution, making the mean less representative of typical property values.",
+    "source": "City Property Registry"
+  },
+  {
+    "id": "heart_rate_data",
+    "name": "Resting Heart Rate",
+    "category": "health",
+    "description": "Resting heart rate data for adults aged 20-60 years.",
+    "dataPoints": [70, 72, 68, 75, 73, 71, 69, 76, 74, 70],
+    "explanation": "The resting heart rate data can be used to identify population health trends. A normal distribution assumption is generally safe, but individual health factors such as fitness levels and medical conditions can create significant deviations.",
+    "source": "National Health Database"
+  },
+  {
+    "id": "stock_returns",
+    "name": "Daily Stock Returns",
+    "category": "finance",
+    "description": "Daily percentage returns for a technology stock over a month.",
+    "dataPoints": [0.5, -0.3, 1.2, -0.8, 0.7, -1.0, 0.6, 0.4, -0.6, 0.9],
+    "explanation": "This dataset represents stock returns, which are often modeled as normally distributed for simplicity. However, the presence of market volatility, black swan events, and investor behavior often causes returns to deviate from a perfect normal distribution.",
+    "source": "Financial Market Data"
+  },
+  {
+    "id": "blood_pressure",
+    "name": "Blood Pressure Readings",
+    "category": "health",
+    "description": "Systolic blood pressure measurements for a sample of middle-aged adults.",
+    "dataPoints": [120, 125, 130, 128, 124, 127, 129, 131, 126, 122],
+    "explanation": "Blood pressure readings can provide insights into population health. Assuming normality is common, but skewness can arise from individuals with undiagnosed conditions or those on medication, necessitating cautious interpretation.",
+    "source": "Local Health Clinic Survey"
+  },
+  {
+    "id": "employee_satisfaction",
+    "name": "Employee Satisfaction Scores",
+    "category": "business",
+    "description": "Satisfaction survey results from employees in a mid-sized company (scale 1-10).",
+    "dataPoints": [8, 7, 9, 6, 8, 7, 9, 8, 7, 6],
+    "explanation": "Employee satisfaction scores are typically analyzed to understand workforce morale. Using statistical measures like the mean can be misleading if the distribution is bimodal, such as when satisfaction diverges between departments.",
+    "source": "Company HR Survey"
+  },
+  {
+    "id": "school_grades",
+    "name": "High School Exam Grades",
+    "category": "education",
+    "description": "Grades from a high school final exam (scale 0-100).",
+    "dataPoints": [85, 78, 92, 74, 88, 81, 95, 69, 76, 84],
+    "explanation": "Exam grades are often analyzed assuming normality, but factors like teaching quality or exam difficulty can result in a skewed distribution, leading to incorrect interpretations if these factors are not considered.",
+    "source": "School District Records"
+  },
+  {
+    "id": "internet_speeds",
+    "name": "Internet Download Speeds",
+    "category": "technology",
+    "description": "Download speeds (Mbps) recorded across a city during peak hours.",
+    "dataPoints": [50, 48, 52, 47, 49, 51, 46, 53, 50, 48],
+    "explanation": "Internet speeds can be visualized to understand service quality. Assuming a normal distribution may mask issues such as poor infrastructure in certain neighborhoods, which could lead to a skewed or multi-modal distribution.",
+    "source": "City Internet Service Providers"
+  },
+  {
+    "id": "plant_growth",
+    "name": "Plant Growth Rates",
+    "category": "agriculture",
+    "description": "Growth rates (cm/week) of a particular crop under controlled conditions.",
+    "dataPoints": [2.5, 3.0, 2.8, 3.1, 2.9, 3.2, 2.7, 3.0, 2.6, 3.3],
+    "explanation": "Plant growth rates are often assumed to be normally distributed under controlled conditions. However, environmental factors like soil nutrients or temperature fluctuations could introduce non-normality, especially in field studies.",
+    "source": "Agricultural Research Center"
+  },
+  {
+    "id": "vehicle_speeds",
+    "name": "Vehicle Speeds on Highway",
+    "category": "transportation",
+    "description": "Speeds (km/h) of vehicles on a major highway during rush hour.",
+    "dataPoints": [100, 102, 98, 105, 101, 99, 103, 97, 104, 100],
+    "explanation": "Vehicle speeds on a highway can provide insights into traffic flow. Assuming normality may overlook variations caused by congestion or accidents, which can lead to a skewed or bimodal distribution.",
+    "source": "Department of Transportation"
+  },
+  {
+    "id": "movie_ratings",
+    "name": "Movie Viewer Ratings",
+    "category": "entertainment",
+    "description": "Ratings (scale 1-10) provided by viewers of a newly released movie.",
+    "dataPoints": [7, 8, 6, 9, 8, 7, 5, 8, 9, 6],
+    "explanation": "Viewer ratings for movies often follow a normal distribution, but can also be influenced by strong opinions, leading to a bimodal distribution where viewers either love or hate the movie.",
+    "source": "Online Movie Review Platform"
+  },
+  {
+    "id": "hospital_wait_times",
+    "name": "Hospital Wait Times",
+    "category": "healthcare",
+    "description": "Waiting times (minutes) for patients in an emergency room.",
+    "dataPoints": [30, 45, 40, 35, 50, 38, 42, 36, 47, 39],
+    "explanation": "Hospital wait times are important for quality assessments. Assuming a normal distribution may not account for outliers caused by sudden influxes of patients during emergencies, resulting in misleading averages.",
+    "source": "Regional Health Authority"
+  },
+  {
+    "id": "customer_service_times",
+    "name": "Customer Service Call Times",
+    "category": "business",
+    "description": "Duration (minutes) of customer service calls in a call center.",
+    "dataPoints": [10, 12, 9, 15, 11, 14, 13, 8, 10, 12],
+    "explanation": "Call times are analyzed to improve efficiency. Assuming normality can be misleading if there are long calls that create a positive skew, which affects overall service time assessments.",
+    "source": "Call Center Operations Data"
+  }
+]
