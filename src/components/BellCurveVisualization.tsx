@@ -1,6 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import { Tooltip } from 'react-tooltip';
+
+// Error function approximation for calculating normal distribution percentages
+const erf = (x: number): number => {
+  const t = 1.0 / (1.0 + 0.5 * Math.abs(x));
+  const tau = t * Math.exp(-x * x - 1.26551223 +
+    t * (1.00002368 +
+      t * (0.37409196 +
+        t * (0.09678418 +
+          t * (-0.18628806 +
+            t * (0.27886807 +
+              t * (-1.13520398 +
+                t * (1.48851587 +
+                  t * (-0.82215223 +
+                    t * 0.17087277)))))))))
+  return x >= 0 ? 1 - tau : tau - 1;
+};
 
 const VisualizationContainer = styled.div`
   width: 100%;
@@ -86,9 +103,30 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         .tickFormat(() => '')
       );
 
-    // Add standard deviation markers
+    // Add standard deviation shading and markers
     [-2, -1, 0, 1, 2].forEach(n => {
       const x = xScale(mean + n * stdDev);
+      
+      // Add shading between standard deviations
+      if (n < 2) {
+        const areaPoints = points.filter(p => 
+          p.x >= mean + n * stdDev && 
+          p.x <= mean + (n + 1) * stdDev
+        );
+        
+        const area = d3.area<{ x: number; y: number }>()
+          .x(d => xScale(d.x))
+          .y0(height)
+          .y1(d => yScale(d.y));
+
+        svg.append('path')
+          .datum(areaPoints)
+          .attr('fill', '#2196f3')
+          .attr('opacity', 0.1 * (3 - Math.abs(n)))
+          .attr('d', area);
+      }
+
+      // Add vertical lines
       svg.append('line')
         .attr('x1', x)
         .attr('x2', x)
@@ -96,7 +134,9 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         .attr('y2', 0)
         .attr('stroke', '#666')
         .attr('stroke-dasharray', '4,4')
-        .attr('opacity', 0.5);
+        .attr('opacity', 0.5)
+        .attr('data-tooltip-id', 'sd-tooltip')
+        .attr('data-tooltip-content', `${Math.abs(n)}σ: ${(erf(Math.abs(n)/Math.sqrt(2)) * 100).toFixed(1)}% of data`);
       
       svg.append('text')
         .attr('x', x)
@@ -105,6 +145,16 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         .attr('font-size', '12px')
         .text(`${n}σ`);
     });
+
+    // Add zoom behavior
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.5, 5])
+      .on('zoom', (event) => {
+        svg.attr('transform', event.transform);
+      });
+
+    d3.select(svgRef.current)
+      .call(zoom);
 
     // Add data points if available
     if (data && data.length > 0) {
@@ -136,6 +186,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
   return (
     <VisualizationContainer>
       <svg ref={svgRef} width="100%" height="100%" />
+      <Tooltip id="sd-tooltip" place="top" />
     </VisualizationContainer>
   );
 };
