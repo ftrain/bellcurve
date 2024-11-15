@@ -117,3 +117,59 @@
     "source": "Call Center Operations Data"
   }
 ]
+[
+  {
+    "id": "climate_change_temps",
+    "name": "Global Temperature Anomalies",
+    "category": "environment",
+    "description": "Temperature deviations from the 20th-century average across different regions.",
+    "dataPoints": [0.2, 0.3, -0.1, 0.5, 0.7, -0.2, 0.1, 0.4, 0.3, 0.2],
+    "explanation": "This dataset helps visualize the change in global temperatures over time. Using the bell curve to understand temperature anomalies assumes that fluctuations are distributed normally, but there are risks since climate changes can introduce skewed or non-normal patterns due to extreme weather events.",
+    "source": "World Climate Research Program"
+  },
+  {
+    "id": "real_estate_prices",
+    "name": "Real Estate Prices",
+    "category": "finance",
+    "description": "Prices of residential properties in a major metropolitan area.",
+    "dataPoints": [300000, 450000, 500000, 350000, 420000, 310000, 490000, 470000, 430000, 340000],
+    "explanation": "This dataset helps evaluate the distribution of property prices in an urban area. Care must be taken with outliers, as the presence of luxury homes can skew the distribution, making the mean less representative of typical property values.",
+    "source": "City Property Registry"
+  },
+  {
+    "id": "heart_rate_data",
+    "name": "Resting Heart Rate",
+    "category": "health",
+    "description": "Resting heart rate data for adults aged 20-60 years.",
+    "dataPoints": [70, 72, 68, 75, 73, 71, 69, 76, 74, 70],
+    "explanation": "The resting heart rate data can be used to identify population health trends. A normal distribution assumption is generally safe, but individual health factors such as fitness levels and medical conditions can create significant deviations.",
+    "source": "National Health Database"
+  },
+  {
+    "id": "stock_returns",
+    "name": "Daily Stock Returns",
+    "category": "finance",
+    "description": "Daily percentage returns for a technology stock over a month.",
+    "dataPoints": [0.5, -0.3, 1.2, -0.8, 0.7, -1.0, 0.6, 0.4, -0.6, 0.9],
+    "explanation": "This dataset represents stock returns, which are often modeled as normally distributed for simplicity. However, the presence of market volatility, black swan events, and investor behavior often causes returns to deviate from a perfect normal distribution.",
+    "source": "Financial Market Data"
+  },
+  {
+    "id": "blood_pressure",
+    "name": "Blood Pressure Readings",
+    "category": "health",
+    "description": "Systolic blood pressure measurements for a sample of middle-aged adults.",
+    "dataPoints": [120, 125, 130, 128, 124, 127, 129, 131, 126, 122],
+    "explanation": "Blood pressure readings can provide insights into population health. Assuming normality is common, but skewness can arise from individuals with undiagnosed conditions or those on medication, necessitating cautious interpretation.",
+    "source": "Local Health Clinic Survey"
+  },
+  {
+    "id": "employee_satisfaction",
+    "name": "Employee Satisfaction Scores",
+    "category": "business",
+    "description": "Satisfaction survey results from employees in a mid-sized company (scale 1-10).",
+    "dataPoints": [8, 7, 9, 6, 8, 7, 9, 8, 7, 6],
+    "explanation": "Employee satisfaction scores are typically analyzed to understand workforce morale. Using statistical measures like the mean can be misleading if the distribution is bimodal, such as when satisfaction diverges between departments.",
+    "source": "Company HR Survey"
+  }
+]
