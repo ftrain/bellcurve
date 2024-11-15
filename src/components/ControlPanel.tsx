@@ -60,10 +60,11 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
     <PanelContainer>
       <h2>Controls</h2>
       <SliderContainer>
-        <SliderLabel>
+        <SliderLabel htmlFor="mean-slider">
           Mean (μ) <SliderValue>{mean.toFixed(2)}</SliderValue>
         </SliderLabel>
         <Slider
+          id="mean-slider"
           type="range"
           min="-10"
           max="10"
@@ -73,10 +74,11 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         />
       </SliderContainer>
       <SliderContainer>
-        <SliderLabel>
+        <SliderLabel htmlFor="stddev-slider">
           Standard Deviation (σ) <SliderValue>{stdDev.toFixed(2)}</SliderValue>
         </SliderLabel>
         <Slider
+          id="stddev-slider"
           type="range"
           min="0.1"
           max="5"

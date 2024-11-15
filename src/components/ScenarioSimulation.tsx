@@ -94,8 +94,9 @@ const ScenarioSimulation: React.FC<ScenarioSimulationProps> = ({ onDataChange })
     <SimulationContainer>
       <h2>Scenario Simulation</h2>
       <SliderContainer>
-        <SliderLabel>Sample Size: {sampleSize}</SliderLabel>
+        <SliderLabel htmlFor="sample-size-slider">Sample Size: {sampleSize}</SliderLabel>
         <Slider
+          id="sample-size-slider"
           type="range"
           min="10"
           max="1000"
