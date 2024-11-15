@@ -115,5 +115,59 @@
     "dataPoints": [10, 12, 9, 15, 11, 14, 13, 8, 10, 12],
     "explanation": "Call times are analyzed to improve efficiency. Assuming normality can be misleading if there are long calls that create a positive skew, which affects overall service time assessments.",
     "source": "Call Center Operations Data"
+  },
+  {
+    "id": "rainfall_data",
+    "name": "Annual Rainfall",
+    "category": "environment",
+    "description": "Annual rainfall measurements (mm) in a specific region.",
+    "dataPoints": [980, 1020, 950, 1100, 890, 1050, 920, 1080, 970, 1010],
+    "explanation": "Rainfall data often shows seasonal patterns and can be affected by extreme weather events, making the assumption of normality potentially misleading for climate analysis.",
+    "source": "National Weather Service"
+  },
+  {
+    "id": "social_media_engagement",
+    "name": "Social Media Post Engagement",
+    "category": "social",
+    "description": "Number of interactions per post on a social media platform.",
+    "dataPoints": [250, 180, 900, 120, 450, 300, 1200, 220, 380, 290],
+    "explanation": "Social media engagement typically follows a power law distribution rather than a normal distribution, with viral posts creating extreme outliers.",
+    "source": "Social Media Analytics Platform"
+  },
+  {
+    "id": "manufacturing_defects",
+    "name": "Manufacturing Defect Rates",
+    "category": "industry",
+    "description": "Number of defects per 1000 units in manufacturing.",
+    "dataPoints": [12, 15, 11, 14, 13, 12, 16, 13, 14, 12],
+    "explanation": "Quality control metrics often assume normality, but improvements in manufacturing processes can lead to skewed distributions as defects become rare events.",
+    "source": "Industrial Quality Control Database"
+  },
+  {
+    "id": "cognitive_response_times",
+    "name": "Cognitive Response Times",
+    "category": "psychology",
+    "description": "Response times (ms) in a cognitive psychology experiment.",
+    "dataPoints": [245, 280, 260, 310, 255, 270, 290, 265, 275, 250],
+    "explanation": "Response time data typically shows a positive skew, making the normal distribution assumption problematic for certain types of cognitive experiments.",
+    "source": "Cognitive Psychology Lab"
+  },
+  {
+    "id": "energy_consumption",
+    "name": "Household Energy Usage",
+    "category": "utilities",
+    "description": "Daily household energy consumption (kWh).",
+    "dataPoints": [28, 32, 25, 45, 30, 35, 29, 31, 27, 33],
+    "explanation": "Energy usage patterns often show seasonal variations and daily peaks, making the normal distribution assumption inappropriate for certain analyses.",
+    "source": "Energy Utility Company"
+  },
+  {
+    "id": "language_learning",
+    "name": "Language Learning Progress",
+    "category": "education",
+    "description": "Time (hours) to reach proficiency milestones in language learning.",
+    "dataPoints": [45, 52, 38, 60, 42, 50, 55, 40, 48, 43],
+    "explanation": "Language learning progress often follows a logistic curve rather than a normal distribution, with rapid initial progress followed by plateaus.",
+    "source": "Language Learning Institute"
   }
 ]

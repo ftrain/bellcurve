@@ -72,6 +72,27 @@ const scenarios = [
     correct: 'Complete dataset shows actual trends',
     misleading: 'Selected data points suggest different pattern',
     explanation: 'Selecting specific data points while ignoring others can create a false narrative that doesn\'t represent the true relationship.'
+  },
+  {
+    id: 'truncated_axis',
+    title: 'Truncated Y-Axis',
+    correct: 'Full axis range shows proper context',
+    misleading: 'Truncated Y-axis exaggerates differences',
+    explanation: 'Starting the Y-axis at a non-zero value can make small changes appear much more dramatic than they really are.'
+  },
+  {
+    id: 'aspect_ratio',
+    title: 'Misleading Aspect Ratio',
+    correct: 'Balanced aspect ratio shows true trend',
+    misleading: 'Stretched aspect ratio distorts perception',
+    explanation: 'Manipulating the width-to-height ratio can make trends appear steeper or flatter than they really are.'
+  },
+  {
+    id: 'bin_manipulation',
+    title: 'Histogram Bin Manipulation',
+    correct: 'Appropriate bin size shows actual distribution',
+    misleading: 'Manipulated bin sizes distort patterns',
+    explanation: 'Choosing very wide or narrow bin sizes in histograms can hide or create patterns that don\'t reflect the true data distribution.'
   }
 ];
 

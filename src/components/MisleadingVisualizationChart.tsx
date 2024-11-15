@@ -45,6 +45,15 @@ const MisleadingVisualizationChart: React.FC<MisleadingVisualizationChartProps> 
       case 'cherry_picking':
         renderCherryPicking(svg, width, height, type);
         break;
+      case 'truncated_axis':
+        renderTruncatedAxis(svg, width, height, type);
+        break;
+      case 'aspect_ratio':
+        renderAspectRatio(svg, width, height, type);
+        break;
+      case 'bin_manipulation':
+        renderBinManipulation(svg, width, height, type);
+        break;
     }
   }, [type, scenario, data]);
 
@@ -145,6 +154,100 @@ const MisleadingVisualizationChart: React.FC<MisleadingVisualizationChartProps> 
       .attr('cx', (d, i) => x(i))
       .attr('cy', d => y(d))
       .attr('r', 4)
+      .attr('fill', '#2196f3');
+
+    svg.append('g')
+      .attr('transform', `translate(0,${height})`)
+      .call(d3.axisBottom(x));
+
+    svg.append('g')
+      .call(d3.axisLeft(y));
+  };
+
+  const renderTruncatedAxis = (svg: d3.Selection<SVGGElement, unknown, null, undefined>, width: number, height: number, type: string) => {
+    const data = [95, 97, 96, 98, 97, 99, 96, 97, 98, 97];
+    
+    const x = d3.scaleLinear()
+      .domain([0, data.length - 1])
+      .range([0, width]);
+
+    const y = d3.scaleLinear()
+      .domain(type === 'misleading' ? [94, 100] : [0, 100])
+      .range([height, 0]);
+
+    const line = d3.line<number>()
+      .x((d, i) => x(i))
+      .y(d => y(d));
+
+    svg.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#2196f3')
+      .attr('stroke-width', 2)
+      .attr('d', line);
+
+    svg.append('g')
+      .attr('transform', `translate(0,${height})`)
+      .call(d3.axisBottom(x));
+
+    svg.append('g')
+      .call(d3.axisLeft(y));
+  };
+
+  const renderAspectRatio = (svg: d3.Selection<SVGGElement, unknown, null, undefined>, width: number, height: number, type: string) => {
+    const data = [10, 12, 11, 13, 12, 14, 13, 15, 14, 16];
+    
+    const x = d3.scaleLinear()
+      .domain([0, data.length - 1])
+      .range([0, type === 'misleading' ? width * 0.5 : width]);
+
+    const y = d3.scaleLinear()
+      .domain([0, 20])
+      .range([height, 0]);
+
+    const line = d3.line<number>()
+      .x((d, i) => x(i))
+      .y(d => y(d));
+
+    svg.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#2196f3')
+      .attr('stroke-width', 2)
+      .attr('d', line);
+
+    svg.append('g')
+      .attr('transform', `translate(0,${height})`)
+      .call(d3.axisBottom(x));
+
+    svg.append('g')
+      .call(d3.axisLeft(y));
+  };
+
+  const renderBinManipulation = (svg: d3.Selection<SVGGElement, unknown, null, undefined>, width: number, height: number, type: string) => {
+    const data = Array.from({ length: 1000 }, () => d3.randomNormal(0, 1)());
+    
+    const x = d3.scaleLinear()
+      .domain([-4, 4])
+      .range([0, width]);
+
+    const histogram = d3.bin()
+      .domain([-4, 4])
+      .thresholds(type === 'misleading' ? 5 : 30);
+
+    const bins = histogram(data);
+    
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(bins, d => d.length) || 0])
+      .range([height, 0]);
+
+    svg.selectAll('rect')
+      .data(bins)
+      .join('rect')
+      .attr('x', d => x(d.x0 || 0))
+      .attr('width', d => Math.max(0, x(d.x1 || 0) - x(d.x0 || 0) - 1))
+      .attr('y', d => y(d.length))
+      .attr('height', d => height - y(d.length))
       .attr('fill', '#2196f3');
 
     svg.append('g')
