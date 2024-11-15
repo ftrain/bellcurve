@@ -87,9 +87,9 @@ const MisleadingVisualizationChart: React.FC<MisleadingVisualizationChartProps> 
       .domain([-4, 4])
       .range([0, width]);
 
-    const histogram = d3.histogram()
-      .domain(x.domain())
-      .thresholds(20);
+    const histogram = d3.bin()
+      .domain([-4, 4])
+      .thresholds(x.ticks(20));
 
     const bins = histogram(data);
     
