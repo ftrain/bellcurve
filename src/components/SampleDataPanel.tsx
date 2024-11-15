@@ -56,7 +56,7 @@ const SampleDataPanel: React.FC<SampleDataPanelProps> = ({
 
   useEffect(() => {
     // In a real app, this would be an API call
-    fetch('/samples.json')
+    fetch(process.env.PUBLIC_URL + '/samples.json')
       .then(response => response.json())
       .then(data => setDatasets(data))
       .catch(error => console.error('Error loading datasets:', error));

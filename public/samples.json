@@ -1,0 +1,29 @@
+[
+  {
+    "id": "climate_change_temps",
+    "name": "Global Temperature Anomalies",
+    "category": "environment",
+    "description": "Temperature deviations from the 20th-century average across different regions.",
+    "dataPoints": [0.2, 0.3, -0.1, 0.5, 0.7, -0.2, 0.1, 0.4, 0.3, 0.2],
+    "explanation": "This dataset helps visualize the change in global temperatures over time. Using the bell curve to understand temperature anomalies assumes that fluctuations are distributed normally, but there are risks since climate changes can introduce skewed or non-normal patterns due to extreme weather events.",
+    "source": "World Climate Research Program"
+  },
+  {
+    "id": "real_estate_prices",
+    "name": "Real Estate Prices",
+    "category": "finance", 
+    "description": "Prices of residential properties in a major metropolitan area.",
+    "dataPoints": [300000, 450000, 500000, 350000, 420000, 310000, 490000, 470000, 430000, 340000],
+    "explanation": "This dataset helps evaluate the distribution of property prices in an urban area. Care must be taken with outliers, as the presence of luxury homes can skew the distribution, making the mean less representative of typical property values.",
+    "source": "City Property Registry"
+  },
+  {
+    "id": "heart_rate_data",
+    "name": "Resting Heart Rate",
+    "category": "health",
+    "description": "Resting heart rate data for adults aged 20-60 years.",
+    "dataPoints": [70, 72, 68, 75, 73, 71, 69, 76, 74, 70],
+    "explanation": "The resting heart rate data can be used to identify population health trends. A normal distribution assumption is generally safe, but individual health factors such as fitness levels and medical conditions can create significant deviations.",
+    "source": "National Health Database"
+  }
+]
