@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import BellCurveVisualization from './components/BellCurveVisualization';
 import ControlPanel from './components/ControlPanel';
@@ -17,11 +17,20 @@ const Header = styled.h1`
 `;
 
 const App: React.FC = () => {
+  const [mean, setMean] = useState(0);
+  const [stdDev, setStdDev] = useState(1);
+
   return (
     <AppContainer>
       <Header>Interactive Bell Curve Explorer</Header>
-      <ControlPanel />
-      <BellCurveVisualization />
+      <ControlPanel 
+        onMeanChange={setMean}
+        onStdDevChange={setStdDev}
+      />
+      <BellCurveVisualization 
+        mean={mean}
+        stdDev={stdDev}
+      />
       <SampleDataPanel />
     </AppContainer>
   );
