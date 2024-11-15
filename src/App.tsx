@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import BellCurveVisualization from './components/BellCurveVisualization';
 import ControlPanel from './components/ControlPanel';
 import SampleDataPanel from './components/SampleDataPanel';
+import ScenarioSimulation from './components/ScenarioSimulation';
 
 const AppContainer = styled.div`
   max-width: 1200px;
@@ -55,6 +56,7 @@ const App: React.FC = () => {
         stdDev={stdDev}
         data={selectedData}
       />
+      <ScenarioSimulation onDataChange={setSelectedData} />
       <SampleDataPanel onDatasetSelect={handleDatasetSelect} />
     </AppContainer>
   );
