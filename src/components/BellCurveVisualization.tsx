@@ -106,6 +106,31 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         .text(`${n}σ`);
     });
 
+    // Add data points if available
+    if (data && data.length > 0) {
+      const histogram = d3.histogram()
+        .domain(xScale.domain())
+        .thresholds(xScale.ticks(30))
+        .value(d => d);
+
+      const bins = histogram(data);
+      const maxBinLength = d3.max(bins, d => d.length) || 0;
+
+      const yScaleHistogram = d3.scaleLinear()
+        .domain([0, maxBinLength])
+        .range([height, height * 0.7]);
+
+      svg.selectAll('rect')
+        .data(bins)
+        .join('rect')
+        .attr('x', d => xScale(d.x0 || 0))
+        .attr('y', d => yScaleHistogram(d.length))
+        .attr('width', d => Math.max(0, xScale(d.x1 || 0) - xScale(d.x0 || 0) - 1))
+        .attr('height', d => height - yScaleHistogram(d.length))
+        .attr('fill', '#2196f3')
+        .attr('opacity', 0.3);
+    }
+
   }, [mean, stdDev, data]);
 
   return (

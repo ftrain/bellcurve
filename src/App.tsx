@@ -16,9 +16,32 @@ const Header = styled.h1`
   margin-bottom: 40px;
 `;
 
+interface Dataset {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  dataPoints: number[];
+  explanation: string;
+  source: string;
+}
+
 const App: React.FC = () => {
   const [mean, setMean] = useState(0);
   const [stdDev, setStdDev] = useState(1);
+  const [selectedData, setSelectedData] = useState<number[]>([]);
+
+  const handleDatasetSelect = (dataset: Dataset) => {
+    setSelectedData(dataset.dataPoints);
+    
+    // Calculate mean and standard deviation from the dataset
+    const dataMean = dataset.dataPoints.reduce((a, b) => a + b, 0) / dataset.dataPoints.length;
+    const variance = dataset.dataPoints.reduce((a, b) => a + Math.pow(b - dataMean, 2), 0) / dataset.dataPoints.length;
+    const dataStdDev = Math.sqrt(variance);
+    
+    setMean(dataMean);
+    setStdDev(dataStdDev);
+  };
 
   return (
     <AppContainer>
@@ -30,8 +53,9 @@ const App: React.FC = () => {
       <BellCurveVisualization 
         mean={mean}
         stdDev={stdDev}
+        data={selectedData}
       />
-      <SampleDataPanel />
+      <SampleDataPanel onDatasetSelect={handleDatasetSelect} />
     </AppContainer>
   );
 };
