@@ -49,10 +49,22 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
     const width = svgRef.current.clientWidth - margin.left - margin.right;
     const height = svgRef.current.clientHeight - margin.top - margin.bottom;
 
-    // Create the SVG container
+    // Create the SVG container and clip path
     const svg = d3.select(svgRef.current)
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // Add clip path
+    svg.append('defs')
+      .append('clipPath')
+      .attr('id', 'clip')
+      .append('rect')
+      .attr('width', width)
+      .attr('height', height);
+
+    // Create a group for the visualization that will be zoomed
+    const vizGroup = svg.append('g')
+      .attr('clip-path', 'url(#clip)');
 
     // Set up scales
     const xScale = d3.scaleLinear()
@@ -78,7 +90,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
       .curve(d3.curveBasis);
 
     // Add the bell curve path
-    svg.append('path')
+    vizGroup.append('path')
       .datum(points)
       .attr('fill', 'none')
       .attr('stroke', '#2196f3')
@@ -119,7 +131,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
           .y0(height)
           .y1(d => yScale(d.y));
 
-        svg.append('path')
+        vizGroup.append('path')
           .datum(areaPoints)
           .attr('fill', '#2196f3')
           .attr('opacity', 0.1 * (3 - Math.abs(n)))
@@ -127,7 +139,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
       }
 
       // Add vertical lines
-      svg.append('line')
+      vizGroup.append('line')
         .attr('x1', x)
         .attr('x2', x)
         .attr('y1', height)
@@ -150,7 +162,19 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
     const zoom = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.5, 5])
       .on('zoom', (event) => {
-        svg.attr('transform', event.transform);
+        // Update the visualization group transform
+        vizGroup.attr('transform', event.transform);
+
+        // Update the axes with the new scale
+        const newXScale = event.transform.rescaleX(xScale);
+        svg.select('.x-axis').call(d3.axisBottom(newXScale));
+        
+        // Update grid lines
+        svg.select('.grid')
+          .call(d3.axisBottom(newXScale)
+            .tickSize(height)
+            .tickFormat(() => '')
+          );
       });
 
     d3.select(svgRef.current)
@@ -170,7 +194,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         .domain([0, maxBinLength])
         .range([height, height * 0.7]);
 
-      svg.selectAll('rect')
+      vizGroup.selectAll('rect')
         .data(bins)
         .join('rect')
         .attr('x', d => xScale(d.x0 || 0))
