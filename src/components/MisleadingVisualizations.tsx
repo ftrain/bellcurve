@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Tooltip } from 'react-tooltip';
+import MisleadingVisualizationChart from './MisleadingVisualizationChart';
 
 const Container = styled.div`
   padding: 20px;
@@ -94,11 +95,21 @@ const MisleadingVisualizations: React.FC = () => {
         <VisualizationCard>
           <Title>Correct Visualization</Title>
           <Description>{scenarios[currentScenario].correct}</Description>
+          <MisleadingVisualizationChart
+            type="correct"
+            scenario={scenarios[currentScenario].id}
+            data={[]}
+          />
         </VisualizationCard>
         
         <VisualizationCard>
           <Title>Misleading Visualization</Title>
           <Description>{scenarios[currentScenario].misleading}</Description>
+          <MisleadingVisualizationChart
+            type="misleading"
+            scenario={scenarios[currentScenario].id}
+            data={[]}
+          />
         </VisualizationCard>
       </ComparisonContainer>
 
