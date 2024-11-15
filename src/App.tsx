@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import BellCurveVisualization from './components/BellCurveVisualization';
 import ControlPanel from './components/ControlPanel';
 import SampleDataPanel from './components/SampleDataPanel';
-import ScenarioSimulation from './components/ScenarioSimulation';
 import MisleadingVisualizations from './components/MisleadingVisualizations';
 
 const AppContainer = styled.div`
@@ -67,7 +66,6 @@ const App: React.FC = () => {
         stdDev={stdDev}
         data={selectedData}
       />
-      <ScenarioSimulation onDataChange={setSelectedData} />
       <MisleadingVisualizations />
     </AppContainer>
   );
