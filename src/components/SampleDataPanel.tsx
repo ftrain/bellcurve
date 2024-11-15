@@ -53,13 +53,29 @@ const SampleDataPanel: React.FC<SampleDataPanelProps> = ({
 }) => {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [selectedDataset, setSelectedDataset] = useState<Dataset | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // In a real app, this would be an API call
-    fetch(process.env.PUBLIC_URL + '/samples.json')
-      .then(response => response.json())
-      .then(data => setDatasets(data))
-      .catch(error => console.error('Error loading datasets:', error));
+    const loadData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(process.env.PUBLIC_URL + '/samples.json');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setDatasets(data);
+      } catch (error) {
+        setError('Failed to load datasets. Please try again later.');
+        console.error('Error loading datasets:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   const handleDatasetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -75,7 +91,19 @@ const SampleDataPanel: React.FC<SampleDataPanelProps> = ({
   return (
     <DataPanelContainer>
       <h2>Sample Datasets</h2>
-      <Select onChange={handleDatasetChange} value={selectedDataset?.id || ''}>
+      {isLoading && <div aria-live="polite">Loading datasets...</div>}
+      {error && <div role="alert" style={{ color: 'red' }}>{error}</div>}
+      <Select 
+        onChange={handleDatasetChange} 
+        value={selectedDataset?.id || ''}
+        disabled={isLoading}
+        aria-label="Select a dataset to visualize"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.currentTarget.click();
+          }
+        }}
+>
         <option value="">Select a dataset...</option>
         {datasets.map(dataset => (
           <option key={dataset.id} value={dataset.id}>

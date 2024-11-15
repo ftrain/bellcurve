@@ -100,13 +100,16 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
       .attr('role', 'graphics-document')
       .attr('aria-label', 'Bell curve visualization');
 
-    // Add invisible overlay for tooltips
+    // Add invisible overlay for tooltips and touch interactions
     const overlay = vizGroup.append('rect')
       .attr('width', width)
       .attr('height', height)
       .attr('fill', 'none')
       .attr('pointer-events', 'all')
-      .attr('aria-hidden', 'true');
+      .attr('aria-hidden', 'true')
+      .attr('tabindex', 0)
+      .attr('role', 'application')
+      .attr('aria-label', 'Bell curve interaction area. Use arrow keys to explore data points.');
 
     // Add tooltip element
     const tooltip = vizGroup.append('g')
@@ -123,7 +126,7 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
       .attr('font-size', '12px');
 
     // Handle mouse events
-    overlay.on('mousemove', (event) => {
+    const handleMove = (event: any) => {
       const [mouseX] = d3.pointer(event);
       const x = xScale.invert(mouseX);
       const y = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * 
@@ -140,9 +143,40 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
         .text(`Value: ${x.toFixed(2)}, Percentile: ${percentile.toFixed(1)}%`);
     });
 
-    overlay.on('mouseout', () => {
-      tooltip.style('display', 'none');
-    });
+    // Handle mouse events
+    overlay
+      .on('mousemove', handleMove)
+      .on('touchmove', (event) => {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const node = overlay.node();
+        if (node) {
+          const rect = node.getBoundingClientRect();
+          const x = touch.clientX - rect.left;
+          handleMove({ offsetX: x });
+        }
+      })
+      .on('mouseout touchend', () => {
+        tooltip.style('display', 'none');
+      })
+      .on('keydown', (event) => {
+        const step = width / 50;
+        let newX = xScale.invert(parseFloat(tooltip.attr('transform').split('(')[1]));
+        
+        switch (event.key) {
+          case 'ArrowLeft':
+            newX -= stdDev / 10;
+            break;
+          case 'ArrowRight':
+            newX += stdDev / 10;
+            break;
+          default:
+            return;
+        }
+        
+        event.preventDefault();
+        handleMove({ offsetX: xScale(newX) });
+      });
 
     // Add x-axis
     svg.append('g')
