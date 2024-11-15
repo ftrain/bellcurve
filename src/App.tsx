@@ -10,12 +10,21 @@ const AppContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const Header = styled.h1`
   text-align: center;
   color: #333;
   margin-bottom: 40px;
+  
+  @media (max-width: 768px) {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
 `;
 
 interface Dataset {
