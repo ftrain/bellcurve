@@ -99,12 +99,14 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
 
     // Add x-axis
     svg.append('g')
+      .attr('class', 'x-axis')
       .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(xScale));
+      .call(d3.axisBottom(xScale) as any);
 
     // Add y-axis
     svg.append('g')
-      .call(d3.axisLeft(yScale));
+      .attr('class', 'y-axis')
+      .call(d3.axisLeft(yScale) as any);
 
     // Add grid lines
     svg.append('g')
@@ -167,13 +169,13 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
 
         // Update the axes with the new scale
         const newXScale = event.transform.rescaleX(xScale);
-        svg.select('.x-axis').call(d3.axisBottom(newXScale));
+        svg.select('.x-axis').call(d3.axisBottom(newXScale) as any);
         
         // Update grid lines
         svg.select('.grid')
           .call(d3.axisBottom(newXScale)
             .tickSize(height)
-            .tickFormat(() => '')
+            .tickFormat(() => '') as any
           );
       });
 
