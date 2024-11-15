@@ -89,13 +89,60 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
       .y(d => yScale(d.y))
       .curve(d3.curveBasis);
 
-    // Add the bell curve path
+    // Add the bell curve path with tooltip area
     vizGroup.append('path')
       .datum(points)
+      .attr('class', 'curve')
       .attr('fill', 'none')
       .attr('stroke', '#2196f3')
       .attr('stroke-width', 2)
-      .attr('d', line);
+      .attr('d', line)
+      .attr('role', 'graphics-document')
+      .attr('aria-label', 'Bell curve visualization');
+
+    // Add invisible overlay for tooltips
+    const overlay = vizGroup.append('rect')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('fill', 'none')
+      .attr('pointer-events', 'all')
+      .attr('aria-hidden', 'true');
+
+    // Add tooltip element
+    const tooltip = vizGroup.append('g')
+      .attr('class', 'tooltip')
+      .style('display', 'none');
+
+    tooltip.append('circle')
+      .attr('r', 4)
+      .attr('fill', '#2196f3');
+
+    tooltip.append('text')
+      .attr('x', 9)
+      .attr('dy', '.35em')
+      .attr('font-size', '12px');
+
+    // Handle mouse events
+    overlay.on('mousemove', (event) => {
+      const [mouseX] = d3.pointer(event);
+      const x = xScale.invert(mouseX);
+      const y = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * 
+                Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2)));
+      
+      // Calculate percentile
+      const zscore = (x - mean) / stdDev;
+      const percentile = (1 + erf(zscore / Math.sqrt(2))) / 2 * 100;
+
+      tooltip.style('display', null)
+        .attr('transform', `translate(${xScale(x)},${yScale(y)})`);
+      
+      tooltip.select('text')
+        .text(`Value: ${x.toFixed(2)}, Percentile: ${percentile.toFixed(1)}%`);
+    });
+
+    overlay.on('mouseout', () => {
+      tooltip.style('display', 'none');
+    });
 
     // Add x-axis
     svg.append('g')
@@ -164,11 +211,19 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
     const zoom = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.5, 5])
       .on('zoom', (event) => {
-        // Update the visualization group transform
-        vizGroup.attr('transform', event.transform);
-
-        // Update the axes with the new scale
+        // Only update x-scale, keeping y-scale fixed
         const newXScale = event.transform.rescaleX(xScale);
+        
+        // Update visualization using the new x-scale but keeping original y-scale
+        const updatedLine = d3.line<{ x: number; y: number }>()
+          .x(d => newXScale(d.x))
+          .y(d => yScale(d.y))
+          .curve(d3.curveBasis);
+
+        vizGroup.selectAll('path.curve')
+          .attr('d', updatedLine);
+
+        // Update x-axis only
         svg.select('.x-axis').call(d3.axisBottom(newXScale) as any);
         
         // Update grid lines
@@ -211,7 +266,19 @@ const BellCurveVisualization: React.FC<BellCurveVisualizationProps> = ({
 
   return (
     <VisualizationContainer>
-      <svg ref={svgRef} width="100%" height="100%" />
+      <svg 
+        ref={svgRef} 
+        width="100%" 
+        height="100%"
+        role="img"
+        aria-label="Interactive bell curve visualization showing normal distribution"
+      >
+        <title>Bell Curve Visualization</title>
+        <desc>
+          An interactive visualization of a normal distribution with adjustable mean and standard deviation.
+          Shows the probability density function and allows zooming and panning.
+        </desc>
+      </svg>
       <Tooltip id="sd-tooltip" place="top" />
     </VisualizationContainer>
   );
