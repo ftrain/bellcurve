@@ -61,6 +61,7 @@ const App: React.FC = () => {
         onMeanChange={setMean}
         onStdDevChange={setStdDev}
       />
+      <SampleDataPanel onDatasetSelect={handleDatasetSelect} />
       <BellCurveVisualization 
         mean={mean}
         stdDev={stdDev}
@@ -68,7 +69,6 @@ const App: React.FC = () => {
       />
       <ScenarioSimulation onDataChange={setSelectedData} />
       <MisleadingVisualizations />
-      <SampleDataPanel onDatasetSelect={handleDatasetSelect} />
     </AppContainer>
   );
 };
